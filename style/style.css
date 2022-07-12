@@ -1,0 +1,79 @@
+#content-carousel {
+    margin-top: 55px;
+    margin-bottom: 55px;
+    padding-top: 50px;
+}
+
+#part-gioithieu {
+    margin-top: 55px;
+    margin-bottom: 55px;
+}
+
+#part-gioithieu>.row {
+    margin: 50px;
+}
+
+#part-gioithieu #da-dang {
+    background-color: lightgoldenrodyellow;
+    padding: 20px;
+}
+
+#part-gioithieu #chat-luong {
+    background-color: yellow;
+    padding: 20px;
+}
+
+#part-gioithieu #huong-vi {
+    background-color: lightsalmon;
+    padding: 20px;
+}
+
+#part-gioithieu #dich-vu {
+    background-color: orange;
+    padding: 20px;
+}
+
+#part-combo {
+    margin-top: 55px;
+    margin-bottom: 55px;
+}
+
+#part-combo>.row {
+    margin: 50px;
+}
+
+#part-type {
+    margin-top: 55px;
+    margin-bottom: 55px;
+}
+
+#part-type>.row {
+    margin: 50px;
+}
+
+#part-drink {
+    margin-top: 55px;
+    margin-bottom: 55px;
+}
+
+#part-drink>.row {
+    margin: 50px;
+}
+
+#part-order {
+    margin-top: 55px;
+    margin-bottom: 55px;
+}
+
+#part-order>.row {
+    margin: 20px;
+}
+
+#footer {
+    margin-top: 55px;
+    padding: 30px;
+}
+
+#footer>.row {
+    margin: 20px;
+}

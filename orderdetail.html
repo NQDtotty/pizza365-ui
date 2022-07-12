@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>Order Detai</title>
+</head>
+
+<body onload="onPageLoading()">
+    <div class="container">
+        <h3 class="mt-5">Order Detai!!!</h3>
+        <div class="form-group mt-3">
+            <label for="">order ID(mã đơn hàng):</label>
+            <input type="text" class="form-control" id="input-orderID" placeholder="...">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Có Combo:</label>
+            <input type="text" class="form-control" id="input-combo" placeholder="...">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Đường kính Pizza</label>
+            <input type="text" class="form-control" id="input-duongkinh" placeholder="...">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Sườn nướng(miếng)</label>
+            <input type="text" class="form-control" id="input-suonnuong" placeholder="...">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Đồ uống</label>
+            <input type="text" class="form-control" id="input-drink" placeholder="...">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Số lượng nước uống</label>
+            <input type="text" class="form-control" id="input-soluong-drink" placeholder="...">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Voucher ID</label>
+            <input type="text" class="form-control" id="input-voucherId" placeholder="...">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Loại pizza</label>
+            <input type="text" class="form-control" id="input-pizza" placeholder="...">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Salad</label>
+            <input type="text" class="form-control" id="input-salad" placeholder="...">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Thành tiền</label>
+            <input type="text" class="form-control" id="input-money" placeholder="...">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Giảm giá</label>
+            <input type="text" class="form-control" id="input-discount" placeholder="...">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Họ và tên</label>
+            <input type="text" class="form-control" id="input-name" placeholder="...">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Email</label>
+            <input type="text" class="form-control" id="input-email" placeholder="...">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Số điện thoại</label>
+            <input type="text" class="form-control" id="input-phonenum" placeholder="...">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Địa chỉ</label>
+            <input type="text" class="form-control" id="input-address" placeholder="...">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Lời nhắn</label>
+            <input type="text" class="form-control" id="input-message" placeholder="...">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Trạng thái đơn hàng</label>
+            <input type="text" class="form-control" id="input-status" placeholder="...">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Ngày tạo đơn</label>
+            <input type="text" class="form-control" id="input-ngaytaodon" placeholder="...">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Ngày cập nhật</label>
+            <input type="text" class="form-control" id="input-ngaycapnhat" placeholder="...">
+        </div>
+        <div class="row mb-5 btn-group">
+            <div class="btn btn-success m-2" onclick="onBtnConfirmClick()">Confirm</div>
+            <div class="btn btn-info m-2" onclick="onBtnCancelClick()">Cancel</div>
+        </div>
+    </div>
+</body>
+<script>
+    const gBaseUrl = "http://42.115.221.44:8080/devcamp-pizza365/orders";
+    const gPIZZA365_NHANVIEN_URL = "pizza365_nhanvien.html";
+    const gREQUEST_READY_STATUS_FINISH_AND_OK = 4;
+    const gREQUEST_STATUS_OK = 200;
+    var gObjectRequest = {
+    }
+
+    function onPageLoading() {
+        getParamQueryString();
+    }
+
+    function onBtnConfirmClick() {
+        var vURLString = window.location.href;
+        var vUrlObject = new URL(vURLString);
+        var vID = vUrlObject.searchParams.get("id");
+        confirmData(vID);
+        // openOrderDetail();
+    }
+    function onBtnCancelClick() {
+        openOrderDetail();
+    }
+
+    function getParamQueryString() {
+        var vURLString = window.location.href;
+        var vUrlObject = new URL(vURLString);
+        var vOrderID = vUrlObject.searchParams.get("orderId");
+        console.log(vOrderID);
+        loadOrderInforByOrderId(vOrderID);
+    }
+
+    function loadOrderInforByOrderId(paramOrderId) {
+        $.ajax({
+            url: gBaseUrl + "/" + paramOrderId,
+            type: "GET",
+            dataType: "json",
+            success: function (paramRes) {
+                showDataToElement(paramRes);
+            },
+            error: function (paramError) {
+
+            }
+        });
+    }
+
+    function showDataToElement(paramObj) {
+        var vInputOrderId = document.getElementById("input-orderID");
+        var vInputCompo = document.getElementById("input-combo");
+        var vInputDuongkinh = document.getElementById("input-duongkinh");
+        var vInputSuonnuong = document.getElementById("input-suonnuong");
+        var vInputDrink = document.getElementById("input-drink");
+        var vInputSoluongDrink = document.getElementById("input-soluong-drink");
+        var vInputVoucherId = document.getElementById("input-voucherId");
+        var vInputPizza = document.getElementById("input-pizza");
+        var vInputSalad = document.getElementById("input-salad");
+        var vInputMoney = document.getElementById("input-money");
+        var vInputDiscount = document.getElementById("input-discount");
+        var vInputName = document.getElementById("input-name");
+        var vInputEmail = document.getElementById("input-email");
+        var vInputPhonenum = document.getElementById("input-phonenum");
+        var vInputAddress = document.getElementById("input-address");
+        var vInputMessage = document.getElementById("input-message");
+        var vInputStatus = document.getElementById("input-status");
+        var vInputNgaytaodon = document.getElementById("input-ngaytaodon");
+        var vInputNgaycapnhat = document.getElementById("input-ngaycapnhat");
+
+        vInputOrderId.value = paramObj.orderId
+        vInputCompo.value = paramObj.kichCo;
+        vInputDuongkinh.value = paramObj.duongKinh;
+        vInputSuonnuong.value = paramObj.suon;
+        vInputDrink.value = paramObj.idLoaiNuocUong;
+        vInputSoluongDrink.value = paramObj.soLuongNuoc;
+        vInputVoucherId.value = paramObj.idVourcher;
+        vInputPizza.value = paramObj.loaiPizza;
+        vInputSalad.value = paramObj.salad;
+        vInputMoney.value = paramObj.thanhTien;
+        vInputDiscount.value = paramObj.giamGia;
+        vInputName.value = paramObj.hoTen;
+        vInputEmail.value = paramObj.email;
+        vInputPhonenum.value = paramObj.soDienThoai;
+        vInputAddress.value = paramObj.diaChi;
+        vInputMessage.value = paramObj.loiNhan;
+        vInputStatus.value = paramObj.trangThai;
+        vInputNgaytaodon.value = paramObj.ngayTao;
+        vInputNgaycapnhat.value = paramObj.ngayCapNhat;
+    }
+
+    function confirmData(paramID) {
+        getDataToUpdate(gObjectRequest);
+        var vXmlHttpUpdateOrder = new XMLHttpRequest();
+        vXmlHttpUpdateOrder.open("PUT", gBaseUrl + "/" + paramID);
+        vXmlHttpUpdateOrder.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        vXmlHttpUpdateOrder.send(JSON.stringify(gObjectRequest));
+        vXmlHttpUpdateOrder.onreadystatechange =
+            function () {
+                if (this.readyState == gREQUEST_READY_STATUS_FINISH_AND_OK && this.status == gREQUEST_STATUS_OK) {
+                    var vUpdatedOrder = vXmlHttpUpdateOrder.responseText;
+                    console.log(vUpdatedOrder);
+                    openOrderDetail();
+                }
+            }
+    }
+
+    function openOrderDetail() {
+        var vURLSiteOpen = gPIZZA365_NHANVIEN_URL;
+        window.location.href = vURLSiteOpen;
+    }
+
+    function getDataToUpdate(paramObj) {
+        var vInputOrderId = document.getElementById("input-orderID");
+        var vInputCompo = document.getElementById("input-combo");
+        var vInputDuongkinh = document.getElementById("input-duongkinh");
+        var vInputSuonnuong = document.getElementById("input-suonnuong");
+        var vInputDrink = document.getElementById("input-drink");
+        var vInputSoluongDrink = document.getElementById("input-soluong-drink");
+        var vInputVoucherId = document.getElementById("input-voucherId");
+        var vInputPizza = document.getElementById("input-pizza");
+        var vInputSalad = document.getElementById("input-salad");
+        var vInputMoney = document.getElementById("input-money");
+        var vInputDiscount = document.getElementById("input-discount");
+        var vInputName = document.getElementById("input-name");
+        var vInputEmail = document.getElementById("input-email");
+        var vInputPhonenum = document.getElementById("input-phonenum");
+        var vInputAddress = document.getElementById("input-address");
+        var vInputMessage = document.getElementById("input-message");
+        var vInputStatus = document.getElementById("input-status");
+        var vInputNgaytaodon = document.getElementById("input-ngaytaodon");
+        var vInputNgaycapnhat = document.getElementById("input-ngaycapnhat");
+
+        paramObj.orderId = vInputOrderId.value;
+        paramObj.kichCo = vInputCompo.value;
+        paramObj.duongKinh = vInputDuongkinh.value;
+        paramObj.suon = vInputSuonnuong.value;
+        paramObj.idLoaiNuocUong = vInputDrink.value;
+        paramObj.soLuongNuoc = vInputSoluongDrink.value;
+        paramObj.idVourcher = vInputVoucherId.value;
+        paramObj.loaiPizza = vInputPizza.value;
+        paramObj.salad = vInputSalad.value;
+        paramObj.thanhTien = vInputMoney.value;
+        paramObj.giamGia = vInputDiscount.value;
+        paramObj.hoTen = vInputName.value;
+        paramObj.email = vInputEmail.value;
+        paramObj.soDienThoai = vInputPhonenum.value;
+        paramObj.diaChi = vInputAddress.value;
+        paramObj.loiNhan = vInputMessage.value;
+        paramObj.trangThai = vInputStatus.value;
+        paramObj.ngayTao = vInputNgaytaodon.value;
+        paramObj.ngayCapNhat = vInputNgaycapnhat.value;
+    }
+</script>
+
+</html>
